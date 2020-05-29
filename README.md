@@ -1,36 +1,39 @@
- * Gldebug implements a mechanism for wrapping and monitoring all gl calls.
- * Gldebug.start(opts) applies a wrapper to all gl and gl extension functions.
- * Gldebug.stop() restores the original gl builtin functions.
+ __Gldebug__ implements a mechanism for wrapping and monitoring all webGL calls
+ * __Gldebug.start(opts)__ applies a wrapper to all gl and gl extension functions.
+ * __Gldebug.stop()__ restores the original gl builtin functions.
 
 Gldebug imposes a very significant overhead so should be used sparingly,
 but can be very helpful for debugging without the need to make lots of code changes.
+Calls to Gldebug can be made from code, or from Dev Tools.
+One useful pattern is to allow a clause in __location.search__ to start Gldebug.
 
 The wrapper can check for gl errors before (should be unnecessary) and after every gl call.
 The wrapper logs some statistics, and takes optional actions, depending on 'action' and any error found.
- * 'action' is a string that can contain one or more of
- *  logall:         all gl calls are logged
- *  logerr:         gl error calls are logged
- *  breakall:       debugger break on every gl call
- *  breakerr:       debugger break on error gl calls
- *  checkbefore:    checks are carried out before each call (by default they are not)
- *  nocheckafter:   checks are not carried out after each call (by default they are)
 
-Gldebug.start() takes an options object as input, which can contain
- *  gl:         gl context, if not given this may be deduced from window.sk or Gldebug.gl
- *  action:     action string as above: defaults to 'logerr'
- *  frames:     number of frames to debug before automatic stop: defaults to Infinity.
- *  frameOwner: object in which the frame counter lives: defaults to window
- *  frameName:  name of frame counter field within frameOwner: defaults to 'framenum'
- *              It is the user program responsibility to update frameOwner[frameName].
- *              Framecounting will depend on exactly where in the frame cycle the start call and framenum update happen.
+ __action__ is a string that can contain one or more of
+ *  __logall:__         all gl calls are logged
+ *  __logerr:__         gl error calls are logged
+ *  __breakall:__       debugger break on every gl call
+ *  __breakerr:__       debugger break on error gl calls
+ *  __checkbefore:__    checks are carried out before each call (by default they are not)
+ *  __nocheckafter:__   checks are not carried out after each call (by default they are)
+
+__Gldebug.start()__ takes an options object as input, which can contain
+ *  __gl:__         gl context, if not given this may be deduced from window.sk or Gldebug.gl
+ *  __action:__     action string as above: defaults to 'logerr'
+ *  __frames:__     number of frames to debug before automatic stop: defaults to Infinity.
+ *  __frameOwner:__ object in which the frame counter lives: defaults to window
+ *  __frameName:__  name of frame counter field within frameOwner: defaults to 'framenum'
  *
-As a shortcut Gldebug.start() may be called with an integer (frames) or a string (action)
- *
+ It is the user program responsibility to update __frameOwner[frameName]__.
+ Framecounting will depend on exactly where in the frame cycle the start call and framenum update happen.
+
+As a shortcut __Gldebug.start()__ may be called with an integer (__frames__) or a string (__action__)
+
 Example calls:
  * Gldebug.start(1)                                     // check all gl calls and log errors, until stop
  * Gldebug.start(1)                                     // check all gl calls for 1 frame and log errors
  * Gldebug.start({gl, action: 'logall', frames: 1})     // leg all gl calls for 1 frame
- *
-##
-Additionally: Gldebug.checkglerr() may be called at any point of a user program
+
+Additionally: __Gldebug.checkglerr()__ may be called at any point of a user program
       to check for outstanding gl errors and take appropriate action.
