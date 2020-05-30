@@ -12,6 +12,8 @@ One useful pattern is to add code that allows a clause in __location.search__ to
 The wrapper can check for gl errors before (should be unnecessary) and after every gl call.
 The wrapper logs some statistics, and takes optional actions, depending on 'action' and any error found.
 
+Gldebug has been coded for use with three.js, but should work for any WebGL application.
+
 ## details
  __action__ is a string that can contain one or more of
  *  __logall:__         all gl calls are logged
@@ -33,12 +35,12 @@ __Gldebug.start()__ takes an options object as input, which can contain
 
 As a shortcut __Gldebug.start()__ may be called with an integer (__frames__) or a string (__action__)
 
-Example calls:
- * `Gldebug.start()`                                      // check all gl calls and log errors, until stop
- * `Gldebug.start(1)`                                     // check all gl calls for 1 frame and log errors
- * `Gldebug.start({gl, action: 'logall', frames: 1})`     // log all gl calls for 1 frame
-
 Additionally: __Gldebug.checkglerr()__ may be called at any point of a user program
-      to check for outstanding gl errors and take appropriate action.
+to check for outstanding gl errors and take appropriate action.
 
-Gldebug has been coded for use with three.js, but should work for any WebGL application.
+## Example calls:
+ * `Gldebug.start()`                                        // check all gl calls and log errors, until stop
+ * `Gldebug.start(1)`                                       // check all gl calls for 1 frame and log errors
+ * `Gldebug.start({gl, action: 'logall', frames: 1})`       // log all gl calls for 1 frame
+ * `Gldebug.stop()`                                         // stop Gldebug, remove all gl call wrappers
+ * `Gldebug.checkglerr('test')`                             // explicit call to check current gl error status
