@@ -38,7 +38,7 @@
 
 var Gldebug = { // var for sharing, was const
     ops: {}, errs: [], errnum: 0,                                           // these collect statistics of calls and errors
-    serious: console.error, showbaderror: console.error, log: console.log,  // these can be tailored if required
+    serious: console.error, showbaderror: console.error, error: console.error, log: console.log,  // these can be tailored if required
     start: function startgldebug(opts = {}) {
         Gldebug.checkglerr('Check for gl errors outstanding before call to Gldebug.start().');
         let lastop, stopframe;
@@ -62,7 +62,7 @@ var Gldebug = { // var for sharing, was const
         }
         stopframe = frameOwner[frameName] + frames;
         Gldebug.gl = gl;
-        if (gl.old) { console.error("already debugging"); return; }
+        if (gl.old) { Gldebug.error("already debugging"); return; }
         if (!Gldebug.gllist) Gldebug.gllist = allglex();
         const gllist = Gldebug.gllist;
         Gldebug.errs = [];
@@ -99,7 +99,7 @@ var Gldebug = { // var for sharing, was const
 
     /** stop current debug session */
     stop: function (gl = Gldebug.gl) {
-        if (!gl.old) { console.error("not currently debugging"); return; }
+        if (!gl.old) { Gldebug.error("not currently debugging"); return; }
         for (let i = 0; i < Gldebug.gllist.length; i++) {
             let ggll = Gldebug.gllist[i];
             for (let f in ggll.old) {
@@ -114,7 +114,7 @@ var Gldebug = { // var for sharing, was const
      * May also be called externally to checkl errors at explicit parts of a user program.
      */
     checkglerr: function(msg, action = 'logerr', args, gl = Gldebug.gl || window.gl) {
-        if (!gl) { console.error('checkglerr called without available context gl'); return -999; }
+        if (!gl) { Gldebug.error('checkglerr called without available context gl'); return -999; }
         gl.finish();
         let rc = gl.getError();
         let errmsg = (rc) ? findval(gl, rc) : 'OK';
@@ -133,7 +133,7 @@ var Gldebug = { // var for sharing, was const
             Gldebug.errnum++;
             if (Gldebug.errnum < 20) Gldebug.errs.push(emsg);
             if (action.indexOf('logerr') !== -1)
-                console.error(">> webgl error " + emsg);
+            Gldebug.error(">> webgl error " + emsg);
             if (action.indexOf('breakerr') !== -1)
                 debugger;
             if (action.indexOf('seriouserr') !== -1)
