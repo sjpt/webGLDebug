@@ -1,3 +1,5 @@
+# webGLDebug
+## summary
  __Gldebug__ implements a mechanism for wrapping and monitoring all webGL calls
  * __Gldebug.start(opts)__ applies a wrapper to all gl and gl extension functions.
  * __Gldebug.stop()__ restores the original gl builtin functions.
@@ -10,6 +12,7 @@ One useful pattern is to add code that allows a clause in __location.search__ to
 The wrapper can check for gl errors before (should be unnecessary) and after every gl call.
 The wrapper logs some statistics, and takes optional actions, depending on 'action' and any error found.
 
+## details
  __action__ is a string that can contain one or more of
  *  __logall:__         all gl calls are logged
  *  __logerr:__         gl error calls are logged
@@ -31,9 +34,9 @@ __Gldebug.start()__ takes an options object as input, which can contain
 As a shortcut __Gldebug.start()__ may be called with an integer (__frames__) or a string (__action__)
 
 Example calls:
- * Gldebug.start(1)                                     // check all gl calls and log errors, until stop
- * Gldebug.start(1)                                     // check all gl calls for 1 frame and log errors
- * Gldebug.start({gl, action: 'logall', frames: 1})     // leg all gl calls for 1 frame
+ * `Gldebug.start()`                                      // check all gl calls and log errors, until stop
+ * `Gldebug.start(1)`                                     // check all gl calls for 1 frame and log errors
+ * `Gldebug.start({gl, action: 'logall', frames: 1})`     // log all gl calls for 1 frame
 
 Additionally: __Gldebug.checkglerr()__ may be called at any point of a user program
       to check for outstanding gl errors and take appropriate action.
