@@ -39,7 +39,7 @@ Additionally: __Gldebug.checkglerr()__ may be called at any point of a user prog
 to check for outstanding gl errors and take appropriate action.
 
 By default Gldebug logging and error messages are directed to the console;
-these can be overridden by setting `Gldebug.serious`, `Gldebug.showbaderror`, and `Gldebug.log`
+these can be overridden by setting `Gldebug.serious`, `Gldebug.showbaderror`, `Gldebug.error`, and `Gldebug.log`
 
 ## Example calls:
  * `Gldebug.start()`                                        // check all gl calls and log errors, until stop
